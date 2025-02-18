@@ -13,6 +13,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(require("./routes/gym"));
 app.use(require("./routes/user"));
 app.use(require("./routes/worker"));
+app.use(require("./routes/appointment"));
 
 app.listen(process.env.PORT || 8000, () => {
     console.log("Servidor corriendo en el puerto 8000");

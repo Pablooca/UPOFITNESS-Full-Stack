@@ -17,20 +17,20 @@ const getGyms = (request, response) => {
 app.route("/gym")
 .get(getGyms);
 
-const getGymById = (request, response) => {
-    connection.query("SELECT * FROM gym WHERE id = ?", [request.params.id], (error, results) => {
+const getGymByCity = (request, response) => {
+    connection.query("SELECT * FROM gym WHERE city = ?", [request.params.city], (error, results) => {
         if (error) throw error;
         response.status(200).json(results);
     });
-}
+};
 
 // ruta
-app.route("/gym/:id")
-.get(getGymById);
+app.route("/gym/:city")
+.get(getGymByCity);
 
 const postGym = (request, response) => {
-    const {name, direction, timetable} = request.body;
-    connection.query("INSERT INTO gym (name, direction, timetable) VALUES (?, ?, ?)", [name, direction, timetable], (error, results) => {
+    const {name, direction,city, timetable} = request.body;
+    connection.query("INSERT INTO gym (name, direction, city, timetable) VALUES (?, ?, ?, ?)", [name, direction, city, timetable], (error, results) => {
         if (error) throw error;
         response.status(201).json({"Gym created": results.affectedRows});
     });
