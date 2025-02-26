@@ -15,6 +15,9 @@ app.use(express.urlencoded({extended: false}));
 
 app.use('/api/gym', require('./routes/gymRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/worker', require('./routes/workerRoutes'));
+app.use('/api/appointment', require('./routes/appointmentRoutes'));
+app.use('/api/diets', require('./routes/dietRoutes'));
 
 app.use(errorHandler);
 

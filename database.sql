@@ -68,4 +68,5 @@ INSERT INTO user VALUES
 INSERT INTO worker VALUES
 ("29503208G", "Pablo Oca Galeano", '2003-03-04', "b0c36cc7c4293549aa21fc10bd32dfb3c144e1f3f90d44d344dbd2fd8b482ef5", "pocagal-admin@gmail.com", "pocagal-admin", "8e4462a99a74c00b798003f4aff5c5f67ce0db438b0714a7c99de2e17feca88c", 4);
 
-INSERT INTO appointment (date, id_worker, id_user) VALUES ("2025-02-15", "29503208G", "89357704J");
+INSERT INTO appointment (date, id_worker, id_user) VALUES ("2025-02-15", "29503208G", "89357704J"),
+("2025-05-25", "29503208G", "19366628F");

@@ -5,7 +5,9 @@ const connectMongoDB = async () => {
     try {
         const conn = await mongoose.connect(process.env.MONGO_URI)
 
-        console.log(`MongoDB Conected: ${conn.connection.host}`.cyan.underline);
+        if (conn){
+            console.log(`MongoDB Conected: ${conn.connection.host}`.cyan.underline);
+        }
     } catch (error){
         console.log(error);
         process.exit(1);
@@ -21,7 +23,9 @@ const connectMySQL = async () => {
             database: process.env.DBNAME,
             port: process.env.DBPORT
         });
-        console.log(`MySQL DB Conected`.yellow.underline);
+        if (connection){
+            console.log(`MySQL DB Conected`.yellow.underline);
+        }
     } catch(error){
         console.log(error);
         process.exit(1);
