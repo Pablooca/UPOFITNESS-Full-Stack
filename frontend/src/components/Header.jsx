@@ -1,5 +1,7 @@
 import {FaSignInAlt, FaSignOutAlt, FaUser} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
+import { FcBusinessman } from "react-icons/fc";
+import { MdEmojiFoodBeverage } from "react-icons/md";
 
 function Header() {
     return (
@@ -16,6 +18,16 @@ function Header() {
                 <li>
                     <Link to='/register'>
                         <FaUser /> Register
+                    </Link>
+                </li>
+                <li>
+                    <Link to='/aboutme'>
+                        <FcBusinessman /> About Me
+                    </Link>
+                </li>
+                <li>
+                    <Link to='/diets'>
+                        <MdEmojiFoodBeverage /> Diets
                     </Link>
                 </li>
             </ul>
