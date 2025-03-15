@@ -13,7 +13,7 @@ const getAppointmentByUser = (req, res) => {
 }
 
 const getAppointmentByWorker = (req, res) => {
-    connection.query('SELECT * FROM appointment WHERE id_worker = ?', [req.params.id_worker], (error, results) => {
+    connection.query('SELECT * FROM appointment WHERE id_worker = ?', [req.params.worker_id], (error, results) => {
         if (error) throw new Error('Error in getAppointmentByWorker');
         res.status(200).json(results);
     })

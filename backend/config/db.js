@@ -3,8 +3,7 @@ const mysql = require('mysql');
 
 const connectMongoDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI)
-
+        const conn = await mongoose.connect(process.env.MONGO_URI);
         if (conn){
             console.log(`MongoDB Conected: ${conn.connection.host}`.cyan.underline);
         }

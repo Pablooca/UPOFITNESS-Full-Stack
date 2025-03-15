@@ -7,7 +7,6 @@ const Diets = require('../models/dietModel');
 // @access Public
 const getDiets = asyncHandler(async (req, res) => {
     const diets = await Diets.find();
-
     res.status(200).json(diets);
 })
 
@@ -15,7 +14,7 @@ const getDiets = asyncHandler(async (req, res) => {
 // @route  GET /api/diets/:id
 // @access Public
 const getDietById = asyncHandler(async (req, res) => {
-    const diet = await Diets.findById({user_id: req.params.id});
+    const diet = await Diet.findById({user_id: req.params.id});
 
     if(diet) {
         res.status(200).json(diet);
@@ -34,7 +33,7 @@ const createDiet = asyncHandler(async (req, res) => {
         throw new Error('Please fill all fields');
     }
 
-    const goal = await Diets.create({
+    const goal = await Diet.create({
         user_id: req.body.user_id,
         worker_id: req.body.worker_id,
         diet: req.body.diet

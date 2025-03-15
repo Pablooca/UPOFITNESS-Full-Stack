@@ -9,10 +9,10 @@ const dietSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a worker']
     },
-    diet: {
-        type: Object,
-        required: [true, 'Please add a diet']
+    meals: {
+        type: [String], // Array of strings
+        required: [true, 'Please add meals']
     }
-})
+});
 
-module.exports = mongoose.model('Diets', dietSchema);
+module.exports = mongoose.model('Diet', dietSchema);
