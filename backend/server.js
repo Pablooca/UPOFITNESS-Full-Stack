@@ -21,4 +21,7 @@ app.use('/api/diets', require('./routes/dietRoutes'));
 
 app.use(errorHandler);
 
+app.get('/', (req, res) => res.send('API is running...'));
+
+
 app.listen(port, () => console.log(`Server is running on port ${port}`.magenta.underline.italic));

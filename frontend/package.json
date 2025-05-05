@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
+    "axios": "^1.8.4",
     "cra-template-redux": "2.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,6 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": [
       "react-app",

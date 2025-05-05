@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router();
 const {getUsers, getUserById, registerUser, loginUser} = require('../controllers/userController');
-
 const {checkEmail, checkDNI, checkBirthDate} = require('../middleware/checksMiddleware');
 
 router.route('/').get(getUsers).post(registerUser);
