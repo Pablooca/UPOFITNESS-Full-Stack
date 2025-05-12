@@ -75,7 +75,4 @@ const protect_worker = asyncHandler(async(req, res, next) => {
     }
 })
 
-
-
-
-module.exports = { protect };
+module.exports = { protect_user, protect_worker };

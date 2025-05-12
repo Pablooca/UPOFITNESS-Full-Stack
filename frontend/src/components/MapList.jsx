@@ -1,50 +1,49 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getGyms, reset } from '../features/gyms/gymSlice';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import GymItem from '../components/GymItem'
+import { getGym, reset } from '../features/gyms/gymSlice';
 
-const MapList = () => {
+function MapList() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { gyms, isLoading, isError, message } = useSelector((state) => state.gyms);
+
+    const { gyms, isLoading, isError, message } = useSelector(
+        (state) => state.gyms
+    )
 
     useEffect(() => {
-        dispatch(getGyms());
+        if (isError) {
+            console.log(message)
+        }
+
+        dispatch(getGym())
 
         return () => {
-            dispatch(reset());
-        };
-    }, [dispatch]);
+            dispatch(reset())
+        }
+    }, [navigate, isError, message, dispatch])
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
-    if (isError) {
-        return <p>Error: {message}</p>;
+    if (isLoading){
+        return <h1>Loading...</h1>
     }
 
     return (
-        <div>
-            <h1>Gym List</h1>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {gyms.map((gym) => (
-                        <tr key={gym.id}>
-                            <td>{gym.id}</td>
-                            <td>{gym.name}</td>
-                            <td>{gym.location}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
-};
+        <>
+            <section className ='content'>
+                {gyms.length > 0 ? (
+                    <div className='gyms'>
+                        {gyms.map((gym) => (
+                            <GymItem key={gym._id} gym={gym} />
+                        ))}
+                    </div>
+                ) : (
+                    <h3>No gyms found</h3>
+                )}
+            </section>
+        </>
+    )
 
-export default MapList;
+}
+
+export default MapList

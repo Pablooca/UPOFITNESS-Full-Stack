@@ -4,14 +4,14 @@ import gymService from './gymService'
 const API_URL = '/api/gym/';
 
 const initialState = {
-    goals: [],
+    gyms: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
 }
 
-export const getGoals = createAsyncThunk(
+export const getGym = createAsyncThunk(
     'gyms/getAll',
     async (_, thunkAPI) => {
         try {
@@ -36,15 +36,15 @@ export const gymSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getGoals.pending, (state) => {
+            .addCase(getGym.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getGoals.fulfilled, (state, action) => {
+            .addCase(getGym.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
                 state.goals = action.payload
             })
-            .addCase(getGoals.rejected, (state, action) => {
+            .addCase(getGym.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
