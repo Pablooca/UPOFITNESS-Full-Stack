@@ -13,9 +13,7 @@ const protect_user = asyncHandler(async(req, res, next) => {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-            req.user = await User.findById(decoded.id).select('-password')
-
-            user = await getUserById(req.user.dni)
+            user = await getUserById(decoded.id)
 
             if (!user) {
                 res.status(401)
@@ -49,9 +47,7 @@ const protect_worker = asyncHandler(async(req, res, next) => {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-            req.user = await User.findById(decoded.id).select('-password')
-
-            worker = await getWorkerById(req.user.dni)
+            worker = await getWorkerById(decoded.id)
 
             if (!worker) {
                 res.status(401)
@@ -65,7 +61,7 @@ const protect_worker = asyncHandler(async(req, res, next) => {
         } catch (error){
             console.error(error);
             res.status(401)
-            throw new Error('Not authorized')
+            throw new Error('Not authorized, invalid token en funcion protect_worker')
         }
     }
 

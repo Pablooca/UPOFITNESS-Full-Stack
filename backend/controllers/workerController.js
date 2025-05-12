@@ -9,13 +9,15 @@ const getWorkers = (req, res) => {
     })
 }
 
-const getWorkerById = (req, res) => {
-    connection.query('SELECT * FROM worker WHERE dni = ?', [req.params.dni], (error, results) => {
-        if (error) throw new Error('Error in getWorkerById');
-        res.status(200).json(results);
-    })
+const getWorkerById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM worker WHERE dni = ?';
+        connection.query(sql, [id], (error, results) => {
+            if (error) return reject(error);
+            resolve(results.length ? results[0] : null);
+        });
+    });
 }
-
 const registerWorker = (req, res) => {
     const {dni, name, birth_date, iban, email, user, password, id_gym} = req.body;
 
@@ -51,7 +53,10 @@ const loginWorker = (req, res) => {
         if (error) throw new Error('Error in loginWorker');
         if (decryptData(results[0].password) === password){
             const token = generateToken(results[0].dni);
-            res.status(200).json({ message: 'Login successful', token });
+            res.status(200).json({ id: results[0].dni, 
+                user: results[0].user,
+                token: token,
+            });
         } else {
             res.status(400).json('Invalid credentials')
         }

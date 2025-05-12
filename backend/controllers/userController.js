@@ -8,10 +8,13 @@ const getUsers = (req, res) => {
     })
 }
 
-const getUserById = (req, res) => {
-    connection.query('SELECT * FROM user WHERE dni = ?', [req.params.dni], (error, results) => {
-        if (error) throw new Error('Error in getUserById');
-        res.status(200).json(results);
+const getUserById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM user WHERE dni = ?';
+        connection.query(sql, [id], (error, results) => {
+            if (error) return reject(error);
+            resolve(results.length ? results[0] : null);
+        })
     })
 }
 

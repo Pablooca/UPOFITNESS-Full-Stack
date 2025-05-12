@@ -5,6 +5,6 @@ const {getWorkers, getWorkerById, registerWorker, loginWorker,} = require('../co
 
 router.route('/').get(getWorkers).post(registerWorker);
 router.route('/:dni').get(getWorkerById);
-router.route('/login').post(loginWorker );
+router.route('/login').post(loginWorker);
 
 module.exports = router;
