@@ -6,14 +6,17 @@ const getAppointments = (req, res) => {
 }
 
 const getAppointmentByUser = (req, res) => {
-    connection.query('SELECT * FROM appointment WHERE id_user = ?', [req.params.user_id], (error, results) => {
+    const userId = req.user.dni;
+    console.log(userId);
+    connection.query('SELECT * FROM appointment WHERE id_user = ?', [userId], (error, results) => {
         if (error) throw new Error('Error in getAppointmentByUser');
         res.status(200).json(results);
     })
 }
 
 const getAppointmentByWorker = (req, res) => {
-    connection.query('SELECT * FROM appointment WHERE id_worker = ?', [req.params.worker_id], (error, results) => {
+    const workerId = req.worker.dni;
+    connection.query('SELECT * FROM appointment WHERE id_worker = ?', [workerId], (error, results) => {
         if (error) throw new Error('Error in getAppointmentByWorker');
         res.status(200).json(results);
     })
@@ -42,7 +45,7 @@ const delAppointment = (req, res) => {
 }
 
 const updateAppointment = (req, res) => {
-    connection.query('UPDATE appointment SET date = ?, id_worker = ? WHERE id = ?', [req.body.date, req.body.id_worker, req.params.id], (error, results) => {
+    connection.query('UPDATE appointment SET date = ? WHERE id = ?', [req.body.date, req.body.id_worker, req.params.id], (error, results) => {
         if (error) throw new Error('Error in updateAppointment');
         res.status(201).json(results);
     })

@@ -10,11 +10,29 @@ const getDiets = asyncHandler(async (req, res) => {
     res.status(200).json(diets);
 })
 
-// @desc   Get diet by ID
-// @route  GET /api/diets/:id
+// @desc   Get diet by user ID
+// @route  GET /api/diets/user/:id
 // @access Public
-const getDietById = asyncHandler(async (req, res) => {
-    const diet = await Diet.findById({user_id: req.params.id});
+const getDietByUserId = asyncHandler(async (req, res) => {
+    const userId = req.user.dni;
+    console.log(userId);
+    const diet = await Diets.findOne({user_id: userId});
+
+    if(diet) {
+        res.status(200).json(diet);
+    } else {
+        res.status(404);
+        throw new Error('Diet not found');
+    }
+});
+
+// @desc Get diet by worker ID
+// @route GET /api/diets/worker/:id
+// @access Public
+const getDietByWorkerId = asyncHandler(async (req, res) => {
+    const workerId = req.worker.dni;
+    console.log(workerId);
+    const diet = await Diets.findOne({worker_id: workerId});
 
     if(diet) {
         res.status(200).json(diet);
@@ -28,23 +46,27 @@ const getDietById = asyncHandler(async (req, res) => {
 // @route  POST /api/diets
 // @access Private
 const createDiet = asyncHandler(async (req, res) => {
-    if( !req.body.user_id || !req.body.worker_id || !req.body.diet) {
+    const { user_id, worker_id, meals } = req.body;
+
+    if (!user_id || !worker_id || !meals || !Array.isArray(meals)) {
         res.status(400);
-        throw new Error('Please fill all fields');
+        throw new Error('Please add all fields');
     }
 
-    const goal = await Diet.create({
-        user_id: req.body.user_id,
-        worker_id: req.body.worker_id,
-        diet: req.body.diet
-    })
+    const newDiet = await Diets.create({
+        user_id,
+        worker_id,
+        meals
+    });
 
-    res.status(201).json(goal);
-})
+    res.status(201).json(newDiet);
+
+});
 
 
 module.exports = {
     getDiets,
-    getDietById,
+    getDietByUserId,
+    getDietByWorkerId,
     createDiet,
 }
