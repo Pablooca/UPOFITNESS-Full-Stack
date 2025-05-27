@@ -42,7 +42,7 @@ export const gymSlice = createSlice({
             .addCase(getGym.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.goals = action.payload
+                state.gyms = action.payload
             })
             .addCase(getGym.rejected, (state, action) => {
                 state.isLoading = false

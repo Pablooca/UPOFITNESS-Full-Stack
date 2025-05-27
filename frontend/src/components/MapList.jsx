@@ -8,13 +8,12 @@ function MapList() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { gyms, isLoading, isError, message } = useSelector(
-        (state) => state.gyms
-    )
+    const gymState = useSelector((state) => state.gyms);
+    const { gyms, isLoading, isError, isSuccess, message } = gymState;
 
     useEffect(() => {
         if (isError) {
-            console.log(message)
+            console.log('ERROR:', message)
         }
 
         dispatch(getGym())
@@ -22,7 +21,7 @@ function MapList() {
         return () => {
             dispatch(reset())
         }
-    }, [navigate, isError, message, dispatch])
+    }, [dispatch])
 
     if (isLoading){
         return <h1>Loading...</h1>
@@ -31,10 +30,11 @@ function MapList() {
     return (
         <>
             <section className ='content'>
+                <h1>Gyms</h1>
                 {gyms.length > 0 ? (
                     <div className='gyms'>
                         {gyms.map((gym) => (
-                            <GymItem key={gym._id} gym={gym} />
+                            <GymItem key={gym.id} gym={gym} />
                         ))}
                     </div>
                 ) : (
