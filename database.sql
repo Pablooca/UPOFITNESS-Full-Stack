@@ -9,7 +9,7 @@ CREATE SCHEMA IF NOT EXISTS upofitness
 
 DROP TABLE IF EXISTS appointment CASCADE;
 DROP TABLE IF EXISTS worker CASCADE;
-DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS gym CASCADE;
 
 CREATE TABLE gym (
@@ -20,7 +20,7 @@ CREATE TABLE gym (
 	timetable VARCHAR(256)
 );
 
-CREATE TABLE "user" (
+CREATE TABLE users (
 	dni VARCHAR(9) PRIMARY KEY,
 	name VARCHAR(256) NOT NULL,
 	birth_date DATE NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE appointment (
 	id_worker VARCHAR(9),
 	id_user VARCHAR(9),
 	FOREIGN KEY (id_worker) REFERENCES worker(dni),
-	FOREIGN KEY (id_user) REFERENCES "user"(dni)
+	FOREIGN KEY (id_user) REFERENCES users(dni)
 );
 
 -- Insert gyms
@@ -70,7 +70,7 @@ INSERT INTO gym (name, direction, city, timetable) VALUES
 ('Salvador de Madariaga', 'Avda. Salvador de Madariaga, 7', 'A Coruña', 'Monday-Friday 6:00-23:00, Saturday-Sunday 8:00-21:00');
 
 -- Insert users
-INSERT INTO "user" VALUES
+INSERT INTO users VALUES
 ('89357704J', 'Encarnacion Ojeda Estevez', '1979-04-10', 'Jardines Lope De Vega, 55, 44472, Odón(Teruel)', '7104fe6be28c7a25ead2b5ae7264f8e3bc67e850a2bc5613565c7866bc581d9a', '710418466', 'encarnacion_79@gmail.com', 'encarnacion_79', '45339f605585ca4c869c795e6f0410f3'),
 ('19366628F', 'Manuel Jose Lafuente Fraile', '1973-07-18', 'Glorieta Mayor, 12, 45970, Cervera De Los Montes(Toledo)', 'a3349af6ca5e41a33801c80e777b818bc2be17498fd46dec5f8012d2c35b9224', '658790774', 'manueljose_73@gmail.com', 'manueljose_73', '92160035a409d3389c35fb4f15d47d38'),
 ('31636878X', 'Carmen Barroso Bello', '1984-01-31', 'Praza Antonio Machado, 32, 03266, Benifato(alicante/alacant)', '94bf430495b814d0e93f2c193658856343cef41b2ac281f22f5609bfedde2230', '785528730', 'carmen_84@gmail.com', 'carmen_84', 'd09ec6e2a38f350575660b2f3b83f110'),

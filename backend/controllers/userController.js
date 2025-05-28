@@ -1,63 +1,74 @@
 const { encryptData, decryptData } = require('../middleware/encryptationMiddleware');
 const jwt = require('jsonwebtoken');
+const { getPool } = require('../config/db');
 
-const getUsers = (req, res) => {
-    connection.query('SELECT * FROM user', (error, results) => {
-        if (error) throw new Error('Error in getUsers');
+const pool = getPool();
+
+const getUsers = async (req, res) => {
+    try {
+        const [results] = await pool.query('SELECT * FROM users');
         res.status(200).json(results);
-    })
+    } catch (error) {
+        console.error('Error in getUsers:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 }
 
 const getUserById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM user WHERE dni = ?';
-        connection.query(sql, [id], (error, results) => {
+        const sql = 'SELECT * FROM users WHERE dni = ?';
+        pool.query(sql, [id], (error, results) => {
             if (error) return reject(error);
             resolve(results.length ? results[0] : null);
-        })
-    })
+        });
+    });
 }
 
-const registerUser = (req, res) => {
+const registerUser = async (req, res) => {
     const {dni, name, birth_date, direction, iban, phone_number, email, user, password} = req.body;
-
+    console.log('Registering user:', req.body);
     if(!dni || !name || !birth_date || !direction || !iban || !phone_number || !email || !user || !password) {
-        res.status(400)
-        throw new Error('Please fill all fields');
+        res.status(400).json({ error: 'Please fill all fields' });
+        return;
+    }
+    try {
+        const encryptedPassword = encryptData(password);
+        const encryptedIban = encryptData(iban);
+
+        const [result] = await pool.query('INSERT INTO users (dni, name, birth_date, direction, iban, phone_number, email, user, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', 
+            [dni, name, birth_date, direction, encryptedIban, phone_number, email, user, encryptedPassword]);
+
+        const token = generateToken(dni);
+        res.status(201).json({ message: 'User registered successfully', token });
+    } catch (error) {
+        console.error('Error in registerUser:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+const loginUser = async (req, res) => {
+    const { user, password } = req.body;
+    if (!user || !password) {
+        return res.status(400).json({ error: 'Please provide both user and password' });
     }
 
-    // Check if user exists
-    const userExists = connection.query('SELECT * FROM user WHERE user = ?', [user], (error, results) => {
-        if (error) throw new Error('Error in register');
-        if (results.length > 0) {
-            res.status(400);
-            throw new Error('User already exists');
+    try {
+        const [results] = await pool.query('SELECT dni, user, password FROM user WHERE user = ?', [user]);
+        if (results.length === 0) {
+            return res.status(400).json({ error: 'Invalid credentials' });
         }
-    })
 
-    const encryptedPassword = encryptData(password);
-
-    const encryptedIban = encryptData(iban);
-
-    connection.query('INSERT INTO user (dni, name, birth_date, direction, iban, phone_number, email, user, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [dni, name, birth_date, direction, encryptedIban, phone_number, email, user, encryptedPassword], (error, results) => {
-        if (error) throw new Error('Error in register');
-        const token = generateToken(dni);
-        res.status(201).json({ results, token });
-    })
-}
-
-const loginUser = (req, res) => {
-    const {user, password} = req.body;
-    connection.query('SELECT dni, user, password FROM user WHERE user = ?', [user], (error, results) => {
-        if (error) throw new Error('Error in loginUser');
         const decryptedPassword = decryptData(results[0].password);
-        if (decryptedPassword === password){
-            const token = generateToken(results[0].dni);
-            res.status(200).json({ message: 'Login successful', token });
-        } else {
-            res.status(400).json('Invalid credentials')
+        if (decryptedPassword !== password) {
+            return res.status(400).json({ error: 'Invalid credentials' });
         }
-    })
+
+        const token = generateToken(results[0].dni);
+        res.status(200).json({ message: 'Login successful', token });
+    } catch (error) {
+        console.error('Error in loginUser:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 }
 
 const generateToken = (id) => {
