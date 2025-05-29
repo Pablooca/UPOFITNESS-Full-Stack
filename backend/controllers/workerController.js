@@ -6,22 +6,30 @@ const pool = getPool();
 
 const getWorkers = async (req, res) => {
     try{
-        const [results] = await pool.query('SELECT * FROM worker');
-        res.status(200).json(results);
+        const results = await pool.query('SELECT * FROM worker');
+        res.status(200).json(results.rows);
     } catch (error){
         console.error('Error in getWorkers:', error);
         res.status(500).json({ error: 'Internal server error'});
     }
 }
 
-const getWorkerById = (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM worker WHERE dni = ?';
-        pool.query(sql, [id], (error, results) => {
-            if (error) return reject(error);
-            resolve(results.length ? results[0] : null);
-        });
-    });
+const getWorkerById = async (req, res) => {
+    const dni = req.params.dni;
+    console.log('Fetching worker by ID:', dni);
+
+    pool.query('SELECT * FROM worker WHERE dni = $1', [dni], (error, result) => {
+        if (error){
+            console.error('Error in getWorkerById:', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Worker not found' });
+        }
+
+        res.status(200).json(result.rows[0]);
+    })
+
 }
 
 const registerWorker = async (req, res) => {
@@ -33,17 +41,10 @@ const registerWorker = async (req, res) => {
     }
 
     try {
-        // Check if worker exists
-        const [existingWorker] = await pool.query('SELECT * FROM worker WHERE user = ?', [user]);
-        if (existingWorker.length > 0) {
-            res.status(400).json({ error: 'Worker already exists' });
-            return;
-        }
-
         const encryptedPassword = encryptData(password);
         const encryptedIban = encryptData(iban);
 
-        const [result] = await pool.query('INSERT INTO worker (dni, name, birth_date, iban, email, user, password, id_gym) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+        const result = await pool.query('INSERT INTO worker (dni, name, birth_date, iban, email, username, password, id_gym) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', 
             [dni, name, birth_date, encryptedIban, email, user, encryptedPassword, id_gym]);
 
         const token = generateToken(dni);
@@ -61,15 +62,15 @@ const loginWorker = async (req, res) => {
     }
 
     try {
-        const [results] = await pool.query('SELECT dni, user, password FROM worker WHERE user = ?', [user]);
+        const results = await pool.query('SELECT dni, user, password FROM worker WHERE username = $1', [user]);
         if (results.length === 0) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
 
-        const worker = results[0];
+        const worker = results.rows[0];
         if (decryptData(worker.password) === password) {
             const token = generateToken(worker.dni);
-            res.status(200).json({ id: worker.dni, user: worker.user, token: token });
+            res.status(200).json({ id: worker.dni, user: worker.username, token: token });
         } else {
             res.status(400).json({ error: 'Invalid credentials' });
         }
