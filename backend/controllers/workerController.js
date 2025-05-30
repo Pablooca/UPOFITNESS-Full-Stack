@@ -14,23 +14,34 @@ const getWorkers = async (req, res) => {
     }
 }
 
-const getWorkerById = async (req, res) => {
-    const dni = req.params.dni;
+const getWorkerById = async (dni) => {
     console.log('Fetching worker by ID:', dni);
-
-    pool.query('SELECT * FROM worker WHERE dni = $1', [dni], (error, result) => {
-        if (error){
-            console.error('Error in getWorkerById:', error);
-            return res.status(500).json({ error: 'Internal server error' });
-        }
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Worker not found' });
-        }
-
-        res.status(200).json(result.rows[0]);
-    })
-
+    const result = await pool.query('SELECT * FROM worker WHERE dni = $1', [dni]);
+    if (result.rows.length > 0){
+        return result.rows[0];
+    } else {
+        return null;
+    }
 }
+
+// const getWorkerById = async (req, res) => {
+//     console.log(req.worker);
+//     const dni = req.worker.dni;
+//     console.log('Fetching worker by ID:', dni);
+
+//     pool.query('SELECT * FROM worker WHERE dni = $1', [dni], (error, result) => {
+//         if (error){
+//             console.error('Error in getWorkerById:', error);
+//             return res.status(500).json({ error: 'Internal server error' });
+//         }
+//         if (result.rows.length === 0) {
+//             return res.status(404).json({ error: 'Worker not found' });
+//         }
+
+//         res.status(200).json(result.rows[0]);
+//     })
+
+// }
 
 const registerWorker = async (req, res) => {
     const {dni, name, birth_date, iban, email, user, password, id_gym} = req.body;
@@ -62,11 +73,10 @@ const loginWorker = async (req, res) => {
     }
 
     try {
-        const results = await pool.query('SELECT dni, user, password FROM worker WHERE username = $1', [user]);
-        if (results.length === 0) {
+        const results = await pool.query('SELECT dni, username, password FROM worker WHERE username = $1', [user]);
+        if (results.rows.length === 0) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-
         const worker = results.rows[0];
         if (decryptData(worker.password) === password) {
             const token = generateToken(worker.dni);

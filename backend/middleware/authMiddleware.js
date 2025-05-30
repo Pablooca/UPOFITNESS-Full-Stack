@@ -47,16 +47,18 @@ const protect_worker = asyncHandler(async(req, res, next) => {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-            worker = await getWorkerById(decoded.id)
+            const worker = await getWorkerById(decoded.id)
 
             if (!worker) {
                 res.status(401)
                 throw new Error('Not authorized, no worker found')
-            } else if (worker) {
-                req.worker = worker
             }
 
-            next()
+            req.worker = worker;
+
+            console.log('Worker found:', worker);
+
+            next();
             
         } catch (error){
             console.error(error);

@@ -1,20 +1,60 @@
-import {useState, useEffect} from 'react'
-import {FaSignInAlt} from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { FaSignInAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 function UpdateUserForm() {
-    const [formData, setFormData] = useState({
-        dni:'',
-        user_name:'',
-        birth_date:'',
-        direction:'',
-        iban:'',
-        phone_number:'',
-        email:'',
-        user: '',
-        password: '',
-    })
+    const navigate = useNavigate()
+    const [userData, setUserData] = useState(null)
+    const [formData, setFormData] = useState(null)
 
-    const {direction, iban, phone_number, email, password} = formData
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user')
+        if (!storedUser) {
+            navigate('/login')
+        } else {
+            try {
+                const parsed = JSON.parse(storedUser)
+                if (!parsed) {
+                    navigate('/login')
+                } else {
+                    setUserData(parsed)
+                }
+            } catch (err) {
+                console.error("Error parsing user data:", err)
+                navigate('/login')
+            }
+        }
+    }, [navigate])
+
+    useEffect(() => {
+        if (userData) {
+            setFormData({
+                dni: userData.dni,
+                name: userData.name,
+                birth_date: userData.birth_date,
+                direction: userData.direction,
+                iban: '',
+                phone_number: userData.phone_number,
+                email: userData.email,
+                user_name: userData.username,
+                password: '',
+            })
+        }
+    }, [userData])
+
+    if (!formData) return null // o un spinner
+
+    const {
+        dni,
+        name,
+        birth_date,
+        direction,
+        iban,
+        phone_number,
+        email,
+        user_name,
+        password
+    } = formData
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -25,6 +65,7 @@ function UpdateUserForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
+        // Aquí puedes enviar formData al backend
     }
 
     return (
@@ -40,28 +81,76 @@ function UpdateUserForm() {
                         <input type="text" className="form-control" id="dni" name="dni" value={dni} readOnly />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="name" name="name" value={user_name} readOnly />
+                        <input type="text" className="form-control" id="name" name="name" value={name} readOnly />
                     </div>
                     <div className="form-group">
                         <input type="text" className="form-control" id="birth_date" name="birth_date" value={birth_date} readOnly />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="direction" name="direction" value={direction} placeholder='Enter your direction' />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="direction"
+                            name="direction"
+                            value={direction}
+                            placeholder="Enter your direction"
+                            onChange={onChange}
+                        />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="iban" name="iban" value={iban} placeholder='Enter your iban' />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="iban"
+                            name="iban"
+                            value={iban}
+                            placeholder="Enter your IBAN"
+                            onChange={onChange}
+                        />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="phone_number" name="phone_number" value={phone_number} placeholder='Enter your phone number' />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="phone_number"
+                            name="phone_number"
+                            value={phone_number}
+                            placeholder="Enter your phone number"
+                            onChange={onChange}
+                        />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="email" name="email" value={email} placeholder='Enter your email' />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            value={email}
+                            placeholder="Enter your email"
+                            onChange={onChange}
+                        />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" id="user" name="user" value={user} placeholder='Enter your user' readOnly />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="user_name"
+                            name="user_name"
+                            value={user_name}
+                            placeholder="Enter your user"
+                            readOnly
+                        />
                     </div>
                     <div className="form-group">
-                        <input type="password" className="form-control" id="password" name="password" value={password} placeholder='Enter your password' onChange={onChange} />
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            name="password"
+                            value={password}
+                            placeholder="Enter your password"
+                            onChange={onChange}
+                        />
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-block">Submit</button>

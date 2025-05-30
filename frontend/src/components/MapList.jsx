@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import GymItem from '../components/GymItem'
@@ -9,11 +9,11 @@ function MapList() {
     const dispatch = useDispatch();
 
     const gymState = useSelector((state) => state.gyms);
-    const { gyms, isLoading, isError, isSuccess, message } = gymState;
+    const { gyms, isLoading, isError, message } = gymState;
 
     useEffect(() => {
         if (isError) {
-            console.log('ERROR:', message)
+            console.error('ERROR:', message)
         }
 
         dispatch(getGym())
@@ -23,27 +23,34 @@ function MapList() {
         }
     }, [dispatch])
 
-    if (isLoading){
+    if (isLoading) {
         return <h1>Loading...</h1>
     }
 
     return (
-        <>
-            <section className ='content'>
-                <h1>Gyms</h1>
-                {gyms.length > 0 ? (
-                    <div className='gyms'>
+        <section className='content'>
+            <h1>Gyms</h1>
+            {gyms.length > 0 ? (
+                <table className="gym-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Direction</th>
+                            <th>City</th>
+                            <th>Timetable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {gyms.map((gym) => (
                             <GymItem key={gym.id} gym={gym} />
                         ))}
-                    </div>
-                ) : (
-                    <h3>No gyms found</h3>
-                )}
-            </section>
-        </>
+                    </tbody>
+                </table>
+            ) : (
+                <h3>No gyms found</h3>
+            )}
+        </section>
     )
-
 }
 
 export default MapList

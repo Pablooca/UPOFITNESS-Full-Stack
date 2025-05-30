@@ -14,9 +14,9 @@ const getDiets = asyncHandler(async (req, res) => {
 // @route  GET /api/diets/user/:id
 // @access Public
 const getDietByUserId = asyncHandler(async (req, res) => {
-    const userId = req.user.dni;
+    const userId = req.params.id;
     console.log(userId);
-    const diet = await Diets.findOne({user_id: userId});
+    const diet = await Diets.find({user_id: userId});
 
     if(diet) {
         res.status(200).json(diet);

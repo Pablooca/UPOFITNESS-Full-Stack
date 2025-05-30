@@ -5,7 +5,7 @@ const { protect_user, protect_worker } = require('../middleware/authMiddleware')
 
 
 router.route('/user/:user_id').get(getAppointmentByUser);
-router.route('/worker/:worker_id').get(getAppointmentByWorker);
+router.route('/worker').get(protect_worker, getAppointmentByWorker);
 router.route('/date/:date').get(getAppointmentByDate);
 router.route('/').get(getAppointments).post(createAppointment);
 router.route('/:id').delete(delAppointment).put(updateAppointment);

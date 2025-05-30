@@ -33,7 +33,7 @@ const getAppointmentByUser = async (req, res) => {
 }
 
 const getAppointmentByWorker = async (req, res) => {
-    const workerId = req.params.worker_id;
+    const workerId = req.worker.dni;
     console.log(workerId);
 
     try {

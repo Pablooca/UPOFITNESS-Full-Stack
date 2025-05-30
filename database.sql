@@ -68,21 +68,3 @@ INSERT INTO gym (name, direction, city, timetable) VALUES
 ('Avenida de Palmas Atlas','Avenida de Palmas Altas 1','Sevilla','Monday-Friday 7:00-22:30, Saturday-Sunday 8:00-21:00'),
 ('Avenida de Jerez 55','Avenida de Jerez 55','Sevilla','Monday-Friday 7:00-22:30, Saturday-Sunday 8:00-21:00'),
 ('Salvador de Madariaga', 'Avda. Salvador de Madariaga, 7', 'A Coruña', 'Monday-Friday 6:00-23:00, Saturday-Sunday 8:00-21:00');
-
--- Insert users
-INSERT INTO users VALUES
-('89357704J', 'Encarnacion Ojeda Estevez', '1979-04-10', 'Jardines Lope De Vega, 55, 44472, Odón(Teruel)', '7104fe6be28c7a25ead2b5ae7264f8e3bc67e850a2bc5613565c7866bc581d9a', '710418466', 'encarnacion_79@gmail.com', 'encarnacion_79', '45339f605585ca4c869c795e6f0410f3'),
-('19366628F', 'Manuel Jose Lafuente Fraile', '1973-07-18', 'Glorieta Mayor, 12, 45970, Cervera De Los Montes(Toledo)', 'a3349af6ca5e41a33801c80e777b818bc2be17498fd46dec5f8012d2c35b9224', '658790774', 'manueljose_73@gmail.com', 'manueljose_73', '92160035a409d3389c35fb4f15d47d38'),
-('31636878X', 'Carmen Barroso Bello', '1984-01-31', 'Praza Antonio Machado, 32, 03266, Benifato(alicante/alacant)', '94bf430495b814d0e93f2c193658856343cef41b2ac281f22f5609bfedde2230', '785528730', 'carmen_84@gmail.com', 'carmen_84', 'd09ec6e2a38f350575660b2f3b83f110'),
-('29503208G', 'Pablo Oca Galeano', '2003-03-04', 'Calle Salto de Alvarado 2, 41007, Sevilla', 'b0c36cc7c4293549aa21fc10bd32dfb3c144e1f3f90d44d344dbd2fd8b482ef5', '611459274', 'pocagal@gmail.com', 'pocagal', '8e4462a99a74c00b798003f4aff5c5f67ce0db438b0714a7c99de2e17feca88c');
-
--- Insert workers
-INSERT INTO worker VALUES
-('29503208G', 'Pablo Oca Galeano', '2003-03-04', 'b0c36cc7c4293549aa21fc10bd32dfb3c144e1f3f90d44d344dbd2fd8b482ef5', 'pocagal-admin@gmail.com', 'pocagal-admin', '8e4462a99a74c00b798003f4aff5c5f67ce0db438b0714a7c99de2e17feca88c', 4);
-
--- Insert appointments
-INSERT INTO appointment (date, id_worker, id_user) VALUES 
-('2025-02-15', '29503208G', '89357704J'),
-('2025-05-25', '29503208G', '19366628F');
-
-

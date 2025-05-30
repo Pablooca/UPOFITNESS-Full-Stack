@@ -4,7 +4,7 @@ const { getDiets, getDietByUserId, getDietByWorkerId, createDiet } = require('..
 const { protect_user, protect_worker } = require('../middleware/authMiddleware');
 
 router.route('/').get(getDiets).post(createDiet);
-router.route('/user').get(getDietByUserId);
+router.route('/user/:id').get(getDietByUserId);
 router.route('/worker').get(getDietByWorkerId);
 
 module.exports = router;
