@@ -33,7 +33,6 @@ function UpdateUserForm() {
                 name: userData.name,
                 birth_date: userData.birth_date,
                 direction: userData.direction,
-                iban: '',
                 phone_number: userData.phone_number,
                 email: userData.email,
                 user_name: userData.username,
@@ -49,7 +48,6 @@ function UpdateUserForm() {
         name,
         birth_date,
         direction,
-        iban,
         phone_number,
         email,
         user_name,
@@ -94,17 +92,6 @@ function UpdateUserForm() {
                             name="direction"
                             value={direction}
                             placeholder="Enter your direction"
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="iban"
-                            name="iban"
-                            value={iban}
-                            placeholder="Enter your IBAN"
                             onChange={onChange}
                         />
                     </div>
