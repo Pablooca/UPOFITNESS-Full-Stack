@@ -63,7 +63,6 @@ function UpdateUserForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        // Aquí puedes enviar formData al backend
     }
 
     return (

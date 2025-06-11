@@ -293,3 +293,84 @@ h3 {
 .meals-subtable tr:nth-child(even) {
     background-color: #f5f5f5;
 }
+
+
+/* Tabla de citas */
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Encabezado de la tabla */
+.appointment-table thead {
+    background-color: #2980b9;
+    color: #fff;
+}
+
+.appointment-table thead th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Filas del cuerpo */
+.appointment-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+}
+
+.appointment-table tbody tr:hover {
+    background-color: #f0f8ff;
+}
+
+/* Celdas del cuerpo */
+.appointment-table td {
+    padding: 0.75rem 1rem;
+    color: #2c3e50;
+}
+
+/* Mensaje si no hay citas */
+.content h3 {
+    text-align: center;
+    margin-top: 2rem;
+    color: #888;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .appointment-table thead {
+        display: none;
+    }
+
+    .appointment-table, .appointment-table tbody, .appointment-table tr, .appointment-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .appointment-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 0.5rem;
+        background-color: #fafafa;
+    }
+
+    .appointment-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .appointment-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 0.75rem;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+    }
+}

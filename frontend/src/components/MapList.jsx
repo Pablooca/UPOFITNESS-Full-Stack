@@ -8,7 +8,6 @@ import 'leaflet/dist/leaflet.css';
 import GymItem from '../components/GymItem';
 import { getGym, reset } from '../features/gyms/gymSlice';
 
-// Fix para los iconos por defecto en Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -55,11 +54,11 @@ function MapList() {
                             const { lat, lng } = data.results[0].geometry;
                             return { ...gym, lat, lng };
                         } else {
-                            console.warn(`No se encontraron coordenadas para: ${query}`);
+                            console.warn(`No coordinates found for: ${query}`);
                             return null;
                         }
                     } catch (error) {
-                        console.error(`Error al geocodificar ${query}:`, error);
+                        console.error(`Error geocoding ${query}:`, error);
                         return null;
                     }
                 })

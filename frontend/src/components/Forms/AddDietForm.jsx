@@ -18,8 +18,6 @@ function AddDietForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        // Aquí puedes agregar la lógica para enviar la dieta, por ejemplo con fetch o axios
-        console.log('Dieta enviada:', formData)
     }
 
     return (

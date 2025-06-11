@@ -18,8 +18,6 @@ function AddAppointmentForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        // Aquí puedes enviar los datos al backend con fetch o axios
-        console.log('Cita enviada:', formData)
     }
 
     return (

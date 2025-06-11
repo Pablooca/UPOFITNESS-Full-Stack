@@ -25,7 +25,7 @@ function LoginUserForm() {
         }
 
         if (isSuccess || userAuth) {
-            navigate('/'); // Ruta a la que rediriges tras hacer login
+            navigate('/');
         }
 
         dispatch(reset());

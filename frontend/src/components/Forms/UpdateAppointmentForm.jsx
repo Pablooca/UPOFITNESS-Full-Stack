@@ -18,8 +18,6 @@ function EditAppointmentForm({ initialData }) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        // Aquí iría la lógica para actualizar la cita (por ejemplo, PUT con fetch o axios)
-        console.log('Cita modificada:', formData)
     }
 
     return (

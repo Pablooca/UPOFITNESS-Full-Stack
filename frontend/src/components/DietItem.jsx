@@ -8,23 +8,19 @@ function DietItem({ diet }) {
         const user = JSON.parse(localStorage.getItem('user'));
         const doc = new jsPDF();
 
-        // Cargar logo como imagen base64
         const logoUrl = `${window.location.origin}/Logo.png`;
         const logoBase64 = await toBase64(logoUrl);
 
-        // Insertar logo
         doc.addImage(logoBase64, 'PNG', 10, 10, 30, 30);
 
-        // Título centrado
         doc.setFontSize(18);
         doc.setFont('helvetica', 'bold');
         const title = `Weekly Diet for ${user.name}`;
         const pageWidth = doc.internal.pageSize.getWidth();
         const textWidth = doc.getTextWidth(title);
         const x = (pageWidth - textWidth) / 2;
-        doc.text(title, x, 45); // debajo del logo
+        doc.text(title, x, 45);
 
-        // Preparar datos de la tabla
         const tableBody = diet.meals.map((mealString, index) => {
             const breakfast = mealString.match(/BREAKFAST:\s*([^,]*)/)?.[1] || '';
             const meal = mealString.match(/MEAL:\s*([^,]*)/)?.[1] || '';
@@ -32,7 +28,6 @@ function DietItem({ diet }) {
             return [daysOfWeek[index], breakfast, meal, dinner];
         });
 
-        // Tabla con autoTable
         autoTable(doc, {
             startY: 55,
             head: [['Day', 'Breakfast', 'Meal', 'Dinner']],
@@ -54,7 +49,6 @@ function DietItem({ diet }) {
         doc.save(`weekly_diet_${user.name}.pdf`);
     };
 
-    // Convertir imagen de URL pública a base64
     const toBase64 = (url) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -68,7 +62,7 @@ function DietItem({ diet }) {
                 ctx.drawImage(img, 0, 0);
                 resolve(canvas.toDataURL('image/png'));
             };
-            img.onerror = () => reject('No se pudo cargar el logo');
+            img.onerror = () => reject('Loading image failed');
         });
     };
 
@@ -104,7 +98,7 @@ function DietItem({ diet }) {
                 </table>
                 <div style={{ marginTop: '10px' }}>
                     <button onClick={generateWeeklyPDF}>
-                        📄 Descargar Dieta Semanal en PDF
+                        📄 Download Weekly Diet
                     </button>
                 </div>
             </td>
