@@ -1,0 +1,11 @@
+PORT=5000
+DBHOST=localhost
+DBUSER=
+DBPASS=
+DBNAME=upofitness
+DBPORT=3308
+MONGO_URI=
+SECRET_KEY = upofitness_secret_key
+SECRET_IV = upofitness_secret_iv
+ENCRYPTATION_METHOD=aes-256-cbc
+JWT_SECRET=upofitness_jwt_secret
